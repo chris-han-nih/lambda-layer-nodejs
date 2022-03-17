@@ -10,4 +10,8 @@
 $ aws lambda publish-layer-version --layer-name <layer-name> \
   --description "description" --zip-file fileb://nodejs.zip \
   --compatible-runtimes nodejs14.x --region <region>
+  
+ $ ./publish.sh <library-directory> <description>
+ $ ./publish.sh mysql 'mysql nodejs library (named, positional parameter 겸용'
 ```
+
