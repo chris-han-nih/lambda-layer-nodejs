@@ -1,19 +1,18 @@
 const AWS = require('aws-sdk');
 
 class S3 {
-    constructor({accessKeyId, secretAccessKey, region, bucketName}) {
+    constructor({accessKeyId, secretAccessKey, region}) {
         this.s3 = new AWS.S3({
             accessKeyId: accessKeyId,
             secretAccessKey: secretAccessKey,
             region: region
         });
-        this.bucket = bucketName;
     }
 
-    async upload({fileName, data, metaData = null}) {
+    async upload({bucketName, fileName, data, metaData = null}) {
         try {
             await this.s3.upload({
-                Bucket: this.bucket,
+                Bucket: bucketName,
                 Key: fileName,
                 Body: data,
                 Metadata: metaData
@@ -23,10 +22,10 @@ class S3 {
         }
     }
 
-    async download({fileName}) {
+    async download({bucketName, fileName}) {
         try {
             return await this.s3.getObject({
-                Bucket: this.bucket,
+                Bucket: bucketName,
                 Key: fileName
             }).promise();
         } catch (err) {
