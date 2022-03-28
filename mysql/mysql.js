@@ -25,11 +25,11 @@ class Mysql {
     }
 
     async first({query, param = null}) {
-        const result = await this.#execute(query, param);
+        const {ok, data} = await this.#execute(query, param);
 
-        if (!result.isOk) return {isOk: result.isOk};
+        if (!ok) return {ok: false};
 
-        return {isOk: result.isOk, data: result.data[0]};
+        return {ok: ok, data: data[0]};
     }
 
     async find({query, param = null}) {
@@ -45,11 +45,11 @@ class Mysql {
             const result = param ? await Mysql.#pool.query(query, param) : await Mysql.#pool.query(query);
             if (Mysql.#isDebug === true) console.log(`[DEBUG] query: ${query}, param: ${param}, result ${JSON.stringify(result[0])}`);
 
-            return {isOk: true, data: result[0]};
+            return {ok: true, data: result[0]};
         } catch (err) {
             console.log(`${err}, Query: ${query}, Param: ${JSON.stringify(param)}`);
 
-            return {isOk: false, data: err};
+            return {ok: false, data: err};
         }
     }
 }
