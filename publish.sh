@@ -14,7 +14,10 @@ fi
 
 echo $'\360\237\223\213' + 'Packaging lambda layer package'
 /bin/mkdir -p nsus && /bin/cp *.js nsus/
-/bin/mv nsus node_modules/
+if [ ! -d "/node_modules/" ]; then
+  /bin/mkdir node_modules/
+fi
+  /bin/mv nsus node_modules/
 /bin/mkdir nodejs && /bin/mv node_modules nodejs/
 
 /usr/bin/zip nodejs.zip -r nodejs

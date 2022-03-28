@@ -1,4 +1,4 @@
-const MYSQL2 = require('Mysql2/promise');
+const MYSQL2 = require('mysql2/promise');
 
 class Mysql {
     static #pool;

@@ -1,6 +1,7 @@
 const AXIOS = require('axios');
 
 class WebClient {
+    #client
     constructor(conf) {
         this.#client = AXIOS.create(conf);
 
