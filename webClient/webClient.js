@@ -10,9 +10,9 @@ class WebClient {
 
     async get({ path, param }) {
         try {
-            const res = param ?
-                await this.#client.httpClient.get(path) :
-                await this.#client.httpClient.get(`${path}?${this.genParam(param)}`);
+            const res = !param ?
+                await this.#client.get(path) :
+                await this.#client.get(`${path}?${this.genParam(param)}`);
             return res;
         } catch (err) {
             throw err;
@@ -21,9 +21,9 @@ class WebClient {
 
     async post({ path, body, param = null }) {
         try {
-            return param ?
-                await this.#client.httpClient.post(path, body) :
-                await this.#client.httpClient.post(`${path}?${this.genParam(param)}`, body);
+            return !param ?
+                await this.#client.post(path, body) :
+                await this.#client.post(`${path}?${this.genParam(param)}`, body);
         } catch (err) {
             throw err;
         }
@@ -33,7 +33,7 @@ class WebClient {
         let result = '';
         let index = 0;
         for (const [k, v] of Object.entries(param)) {
-            result += index === 0 ? `${k}=${v}` : `&${k}=${v}`;
+            result += index++ === 0 ? `${k}=${v}` : `&${k}=${v}`;
         }
 
         return result;
