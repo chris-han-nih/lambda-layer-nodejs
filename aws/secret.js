@@ -8,11 +8,11 @@ class Secret {
             const secretValue = await secretsManager.getSecretValue({SecretId: secretName}).promise();
 
             if ('SecretString' in secretValue) {
-                return secretValue.SecretString;
+                return JSON.parse(secretValue.SecretString);
             }
 
             const buff = new Buffer(secretValue.SecretBinary, 'base64');
-            return buff.toString('ascii');
+            return JSON.parse(buff.toString('ascii'));
         } catch (err) {
             throw err
         }
