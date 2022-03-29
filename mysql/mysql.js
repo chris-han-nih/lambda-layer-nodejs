@@ -43,7 +43,7 @@ class Mysql {
     async #execute(query, param) {
         try {
             const result = param ? await Mysql.#pool.query(query, param) : await Mysql.#pool.query(query);
-            if (Mysql.#isDebug === true) console.log(`[DEBUG] query: ${query}, param: ${param}, result ${JSON.stringify(result[0])}`);
+            if (Mysql.#isDebug === true) console.log(`[DEBUG] query: ${query}, param: ${JSON.stringify(param)}, result ${JSON.stringify(result[0])}`);
 
             return {ok: true, data: result[0]};
         } catch (err) {
