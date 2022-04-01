@@ -9,7 +9,7 @@ cd $PROD_NAME
 if [ -f "package.json" ]; then
   /bin/rm -rf node_modules
   echo $'\342\232\231' + 'Install node package'
-  npm install
+  npm install --production
 fi
 
 echo $'\360\237\223\213' + 'Packaging lambda layer package'
