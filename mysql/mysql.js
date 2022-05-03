@@ -27,7 +27,7 @@ class Mysql {
     async first({query, param = null}) {
         const {ok, data} = await this.#execute(query, param);
 
-        if (!ok) return {ok: false};
+        if (!ok || !data[0]) return { ok: false };
 
         return {ok: ok, data: data[0]};
     }
