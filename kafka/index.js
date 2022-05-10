@@ -44,3 +44,5 @@ class KafkaProducer {
         return (param && param.trim() !== '') || (field && field.trim() !== '');
     }
 }
+
+module.exports = { KafkaProducer }
