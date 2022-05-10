@@ -13,9 +13,9 @@ class KafkaProducer {
                 rejectUnauthorized: true
             },
             sasl: {
-                mechanism: 'SCRAM-SHA-512',
-                username: 'staging_msk',
-                password: 'staging_msk!@',
+                mechanism: conf.mechanism,
+                username: conf.username,
+                password: conf.password,
             }
         })).producer();
     }
@@ -26,7 +26,7 @@ class KafkaProducer {
 
     async sendMessage(msg, topic) {
         if (!KafkaProducer.#isValidTopic(topic, this.#topic)) {
-            return {ok: false, error: 'topic can not be null or empty'}
+            throw 'topic can not be null or empty';
         }
 
         return this.#producer.send({
