@@ -17,7 +17,11 @@ class KafkaProducer {
                 username: conf.username,
                 password: conf.password,
             }
-        })).producer().connect();
+        })).producer();
+    }
+
+    async connect() {
+        await this.#producer.connect();
     }
 
     async sendMessage(msg, topic) {
