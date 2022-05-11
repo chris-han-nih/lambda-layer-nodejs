@@ -17,28 +17,34 @@ class KafkaProducer {
                 username: conf.username,
                 password: conf.password,
             }
-        })).producer();
-    }
-
-    async connect() {
-        await this.#producer.connect();
+        })).producer().connect();
     }
 
     async sendMessage(msg, topic) {
         if (!KafkaProducer.#isValidTopic(topic, this.#topic)) {
             throw 'topic can not be null or empty';
         }
+        if (!msg) {
+            throw 'msg is required';
+        }
 
         return this.#producer.send({
             topic: this.#topic ?? topic,
             compression: CompressionTypes.GZIP,
-            messages: msg
+            messages: Array(msg).map(_ => KafkaProducer.#createMessage(msg, topic))
         }).then(() => {
             return {ok: true}
         }).catch(e => {
             return {ok: false, error: e};
         });
     }
+
+	static #createMessage(msg) {
+        return {
+            key: msg.key ?? '',
+            value: JSON.stringify(msg.value)
+        }
+	}
 
     static #isValidTopic(param, field) {
         return (param && param.trim() !== '') || (field && field.trim() !== '');
