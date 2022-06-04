@@ -23,7 +23,7 @@ fi
 /usr/bin/zip nodejs.zip -r nodejs
 
 echo $'\342\217\261' + 'Publish package to lambda layer'
-aws lambda publish-layer-version --layer-name $PROD_NAME --description "$DESCRIPTION" --zip-file fileb://nodejs.zip --compatible-runtimes nodejs14.x
+aws lambda publish-layer-version --layer-name $PROD_NAME --description "$DESCRIPTION" --zip-file fileb://nodejs.zip --compatible-runtimes nodejs16.x
 
 echo $'\360\237\227\221' + 'Clean up directory and file'
 /bin/rm -rf nodejs
