@@ -1,23 +1,23 @@
 const MYSQL2 = require('mysql2/promise');
 
 class Mysql {
-    static #pool;
-    static #isDebug = false;
+    #pool;
+    #isDebug = false;
 
     constructor(conf) {
         if (!conf) throw 'invalid DB configuration.';
 
         if (typeof conf.isDebug === 'string') {
-            Mysql.#isDebug = conf.isDebug.toUpperCase() === 'DEBUG';
+            this.#isDebug = conf.isDebug.toUpperCase() === 'DEBUG';
         } else if (typeof conf.isDebug === 'boolean') {
-            Mysql.#isDebug = conf.isDebug;
+            this.#isDebug = conf.isDebug;
         }
 
-        if (Mysql.#pool) {
-            if (Mysql.#isDebug === true) console.debug('is connected');
+        if (this.#pool) {
+            if (this.#isDebug === true) console.debug('is connected');
             return this;
         }
-        Mysql.#pool = MYSQL2.createPool({
+        this.#pool = MYSQL2.createPool({
             host: conf.host,
             user: conf.user,
             password: conf.password,
@@ -29,6 +29,11 @@ class Mysql {
         });
 
         return this;
+    }
+
+    close() {
+        this.#pool.end();
+        this.#pool = null;
     }
 
     async first({query, param = null}) {
@@ -49,8 +54,8 @@ class Mysql {
 
     async #execute(query, param) {
         try {
-            const result = param ? await Mysql.#pool.query(query, param) : await Mysql.#pool.query(query);
-            if (Mysql.#isDebug === true)
+            const result = param ? await this.#pool.query(query, param) : await this.#pool.query(query);
+            if (this.#isDebug === true)
                 console.debug(`query: ${query}, param: ${JSON.stringify(param)}, result ${JSON.stringify(result)}`);
 
             return {ok: true, data: result[0]};
