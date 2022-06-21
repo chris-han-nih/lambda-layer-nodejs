@@ -1,7 +1,7 @@
 const MYSQL2 = require('mysql2/promise');
 
 class Mysql {
-    #pool;
+    static #pool;
     #isDebug = false;
 
     constructor(conf) {
@@ -13,11 +13,11 @@ class Mysql {
             this.#isDebug = conf.isDebug;
         }
 
-        if (this.#pool) {
+        if (Mysql.#pool) {
             if (this.#isDebug === true) console.debug('is connected');
             return this;
         }
-        this.#pool = MYSQL2.createPool({
+        Mysql.#pool = MYSQL2.createPool({
             host: conf.host,
             user: conf.user,
             password: conf.password,
@@ -32,8 +32,8 @@ class Mysql {
     }
 
     close() {
-        this.#pool.end();
-        this.#pool = null;
+        Mysql.#pool.end();
+        Mysql.#pool = null;
     }
 
     async first({query, param = null}) {
@@ -54,7 +54,7 @@ class Mysql {
 
     async #execute(query, param) {
         try {
-            const result = param ? await this.#pool.query(query, param) : await this.#pool.query(query);
+            const result = param ? await Mysql.#pool.query(query, param) : await Mysql.#pool.query(query);
             if (this.#isDebug === true)
                 console.debug(`query: ${query}, param: ${JSON.stringify(param)}, result ${JSON.stringify(result)}`);
 
