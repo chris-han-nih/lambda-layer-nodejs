@@ -11,7 +11,7 @@ class S3 {
 
     async upload({bucketName, fileName, data, metaData = null}) {
         try {
-            await this.s3.upload({
+            return await this.s3.upload({
                 Bucket: bucketName,
                 Key: fileName,
                 Body: data,
