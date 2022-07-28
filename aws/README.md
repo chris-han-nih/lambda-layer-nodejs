@@ -9,9 +9,9 @@ const {S3} = require('nsus/s3');
 #### 2. Initialize
 ```javascript
 const s3 = new S3({
-    accessKeyId: <access-key-id>,
-    secretAccessKey: <secret-access-key>,
-    region: <region>,
+    accessKeyId: 'ASDF-..',
+    secretAccessKey: 'ADF123-...',
+    region: 'ap-east-1',
 });
 ```
 no|prop|desc
@@ -25,7 +25,7 @@ no|prop|desc
 await s3.upload({
     bucketName: '<bucket-name>',
     fileName: '<file-name>',
-    data: <bytes>,
+    data: data,
     metaData: {} 
 });
 ```
@@ -43,3 +43,17 @@ const result = await s3.download({
     fileName: '<file-name>'
 });
 ```
+---
+## Secret
+#### 1. Import
+```javascript
+const {Secret} = require('nsus/secret'); 
+```
+#### 2. Example
+```javascript
+const con = await Secret.getSecret({
+    secretName: 'prd/romania/rds',
+    region: 'ap-east-1'
+});
+```
+
